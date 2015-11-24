@@ -16,6 +16,7 @@
  */
 
 #include "main.h"
+#include "stack.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -79,6 +80,8 @@ main(int argc, char *argv[])
 
 	log_init(debug, __progname);
 	log_info("main", "hello world!");
+	stack_ptr *stack;
+	stack_create(stack);
 
 	return EXIT_SUCCESS;
 }
