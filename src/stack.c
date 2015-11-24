@@ -81,3 +81,16 @@ int stack_empty(stack_ptr *stack)
 {
   return ((*stack)->next == NULL && (*stack)->data == NULL);
 }
+
+/**
+ * Attempts to allocate in memory a new node, if it fails
+ * the stack is full (memory overflow)
+ *
+ * @param stack Stack pointer
+ * @return int 1 for full stack, 0 for non-full stack
+ */
+int stack_full(stack_ptr *stack)
+{
+  node_ptr tmp = (node_ptr) malloc(sizeof(t_node));
+  return (tmp == NULL);
+}
