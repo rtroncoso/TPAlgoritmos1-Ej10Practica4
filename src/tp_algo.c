@@ -1,7 +1,4 @@
 /* -*- mode: c; c-file-style: "openbsd" -*- */
-/* TODO:5002 You may want to change the copyright of all files. This is the
- * TODO:5002 ISC license. Choose another one if you want.
- */
 /*
  * Copyright (c) 2014 Rodrigo Troncoso <rod.tronco@gmail.com>
  *
@@ -30,8 +27,6 @@ extern const char *__progname;
 static void
 usage(void)
 {
-	/* TODO:3002 Don't forget to update the usage block with the most
-	 * TODO:3002 important options. */
 	fprintf(stderr, "Usage: %s [OPTIONS]\n",
 	    __progname);
 	fprintf(stderr, "Version: %s\n", PACKAGE_STRING);
