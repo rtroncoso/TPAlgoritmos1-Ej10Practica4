@@ -39,5 +39,6 @@ void stack_push(stack_ptr *stack, t_data x);
 t_data stack_pop(stack_ptr *stack);
 int stack_empty(stack_ptr *stack);
 int stack_full(stack_ptr *stack);
+void stack_output(stack_ptr *stack);
 
 #endif

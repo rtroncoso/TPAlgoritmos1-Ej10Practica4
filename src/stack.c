@@ -94,3 +94,15 @@ int stack_full(stack_ptr *stack)
   node_ptr tmp = (node_ptr) malloc(sizeof(t_node));
   return (tmp == NULL);
 }
+
+/**
+ * Outputs the stack to standard output (destroys it)
+ * 
+ * @param stack Stack pointer
+ * @return void
+ */
+void stack_output(stack_ptr *stack)
+{
+  while( ! stack_empty(stack)) printf("%c", stack_pop(stack));
+  printf("\n");
+}

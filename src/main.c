@@ -82,7 +82,7 @@ static void test(void)
 static void solve_exercise(seq_ptr *seq, stack_ptr *stack)
 {
   char c; int aux = 0;
-  c = seq_read_first(seq);
+  if( ! seq_end(seq)) c = seq_read_first(seq);
 
   while( ! seq_end(seq) && ! stack_full(stack)) {
     if( ! isdigit(c)) {
@@ -104,17 +104,20 @@ int main(int argc, char *argv[])
 {
   int debug = 1;
   int ch;
+  char *file_path = NULL;
 
   static struct option long_options[] = {
                 { "test", no_argument, 0, 't' },
+                { "input", no_argument, 0, 'i' },
                 { "debug", no_argument, 0, 'd' },
                 { "help",  no_argument, 0, 'h' },
                 { "version", no_argument, 0, 'v' },
+    { 0 },
     { 0 }
   };
   while (1) {
     int option_index = 0;
-    ch = getopt_long(argc, argv, "hvdtD:",
+    ch = getopt_long(argc, argv, "hvdtD:i:",
         long_options, &option_index);
     if (ch == -1) break;
     switch (ch) {
@@ -131,6 +134,9 @@ int main(int argc, char *argv[])
       break;
     case 'D':
       log_accept(optarg);
+      break;
+    case 'i':
+      file_path = optarg;
       break;
     case 't':
       log_init(2, __progname);
@@ -153,12 +159,13 @@ int main(int argc, char *argv[])
   stack_ptr stack = NULL;
 
   // Initialize and solve exercise
-  seq_prepare(&seq, "test_data.txt");
+  if(file_path == NULL) {
+    file_path = "test_data.txt";
+  }
+  seq_prepare(&seq, file_path); 
   stack_create(&stack);
   solve_exercise(&seq, &stack);
-
-  // Outputs rest of the stack
-  while( ! stack_empty(&stack)) printf("%c", stack_pop(&stack));
+  stack_output(&stack);
 
   // Return success
   return EXIT_SUCCESS;
