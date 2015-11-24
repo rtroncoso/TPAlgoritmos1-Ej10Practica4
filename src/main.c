@@ -18,6 +18,7 @@
 #include "main.h"
 #include "log.h"
 #include "stack.h"
+#include "sequence.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -84,6 +85,16 @@ main(int argc, char *argv[])
 
   char a = 'b';
   stack_ptr stack = NULL;
+  seq_ptr seq = NULL;
+
+  seq_prepare(&seq, "sequence");
+  seq_write(&seq, 'o');
+  seq_close(&seq);
+
+  seq_prepare(&seq, "sequence");
+  log_info("main", "Character written in sequence: %c", a = seq_read_first(&seq));
+  seq_close(&seq);
+
   stack_create(&stack);
   log_info("main", "Stack is: %s", stack_empty(&stack) ? "Empty" : "Not empty");
   stack_push(&stack, a);
