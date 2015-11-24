@@ -1,6 +1,6 @@
 /* -*- mode: c; c-file-style: "openbsd" -*- */
 /*
- * Copyright (c) 2014 Rodrigo Troncoso <rod.tronco@gmail.com>
+ * Copyright (c) 2015 Rodrigo Troncoso <rod.tronco@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -20,10 +20,9 @@
 
 #include <stdlib.h>
 #include <stdio.h>
- 
-typedef char t_data;
 
 // Stack Node Definition
+typedef char t_data;
 typedef struct s_node 
 {
   t_data data;

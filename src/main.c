@@ -1,6 +1,6 @@
 /* -*- mode: c; c-file-style: "openbsd" -*- */
 /*
- * Copyright (c) 2014 Rodrigo Troncoso <rod.tronco@gmail.com>
+ * Copyright (c) 2015 Rodrigo Troncoso <rod.tronco@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -85,9 +85,12 @@ main(int argc, char *argv[])
   char a = 'b';
   stack_ptr stack = NULL;
   stack_create(&stack);
+  log_info("main", "Stack is: %s", stack_empty(&stack) ? "Empty" : "Not empty");
   stack_push(&stack, a);
+  log_info("main", "Stack is: %s", stack_empty(&stack) ? "Empty" : "Not empty");
   a = (char) stack_pop(&stack);
   log_info("main", "First character in stack: %c", a);
+  log_info("main", "Stack is: %s", stack_empty(&stack) ? "Empty" : "Not empty");
 
   return EXIT_SUCCESS;
 }

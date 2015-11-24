@@ -1,6 +1,6 @@
 /* -*- mode: c; c-file-style: "openbsd" -*- */
 /*
- * Copyright (c) 2014 Rodrigo Troncoso <rod.tronco@gmail.com>
+ * Copyright (c) 2015 Rodrigo Troncoso <rod.tronco@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -35,7 +35,7 @@ void stack_create(stack_ptr *stack)
 /**
  * Pushes an element into the stack
 
- * @param stack Structure where the current stack is stored
+ * @param stack Stack pointer
  * @param x     Element to be pushed into the stack
  * @return void
  */
@@ -54,7 +54,7 @@ void stack_push(stack_ptr *stack, t_data x)
 /**
  * Pops an element from the stack
  
- * @param stack Structure where the current stack is stored
+ * @param stack Stack pointer
  * @return void First element from the stack
  */
 t_data stack_pop(stack_ptr *stack)
@@ -69,4 +69,15 @@ t_data stack_pop(stack_ptr *stack)
 
   log_info("stack", "(stack_pop): Removing node from stack: %c", (t_data) x);
   return x;
+}
+
+/**
+ * Returns 0 or 1 depending on the stack status (empty or non-empty)
+ *
+ * @param stack Stack pointer
+ * @return int 1 for empty stack, 0 for non-empty stack
+ */
+int stack_empty(stack_ptr *stack)
+{
+  return ((*stack)->next == NULL && (*stack)->data == NULL);
 }
