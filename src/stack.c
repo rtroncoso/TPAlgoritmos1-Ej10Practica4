@@ -27,11 +27,46 @@
 void stack_create(stack_ptr *stack)
 {
   log_info("stack", "(stack_create): Creating a new empty node");
+  *stack = (stack_ptr) malloc(sizeof(t_node));
+  (*stack)->data = (char) 0;
+  (*stack)->next = NULL;
+}
+
+/**
+ * Pushes an element into the stack
+
+ * @param stack Structure where the current stack is stored
+ * @param x     Element to be pushed into the stack
+ * @return void
+ */
+void stack_push(stack_ptr *stack, char x)
+{
+  log_info("stack", "(stack_push): Adding a new node to stack with data: %c", x);
   node_ptr node;
   node = (node_ptr) malloc(sizeof(t_node));
   if(node != NULL) {
-    node->data = (char) 0;
-    node->next = node;
+    node->data = x;
+    node->next = *stack;
     *stack = node;
   }
+}
+
+/**
+ * Pops an element from the stack
+ 
+ * @param stack Structure where the current stack is stored
+ * @return char First element from the stack
+ */
+char stack_pop(stack_ptr *stack)
+{
+  node_ptr node;
+  char x;
+
+  node = *stack;
+  x = (*stack)->data;
+  *stack = (*stack)->next;
+  free(node);
+  
+  log_info("stack", "(stack_pop): Removing node from stack: %c", x);
+  return x;
 }
