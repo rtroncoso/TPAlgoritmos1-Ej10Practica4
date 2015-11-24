@@ -20,11 +20,13 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+ 
+typedef char t_data;
 
 // Stack Node Definition
 typedef struct s_node 
 {
-  char data;
+  t_data data;
   struct s_node *next;
 } t_node;
 
@@ -34,8 +36,8 @@ typedef t_node *stack_ptr;
 
 // Function Interfaces
 void stack_create(stack_ptr *stack);
-void stack_push(stack_ptr *stack, char x);
-char stack_pop(stack_ptr *stack);
+void stack_push(stack_ptr *stack, t_data x);
+t_data stack_pop(stack_ptr *stack);
 int stack_empty(stack_ptr *stack);
 int stack_full(stack_ptr *stack);
 

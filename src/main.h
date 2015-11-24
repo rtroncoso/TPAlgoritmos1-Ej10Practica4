@@ -22,8 +22,6 @@
 #  include <config.h>
 #endif
 
-#include "log.h"
-
 #include <stdlib.h>
 
 #endif

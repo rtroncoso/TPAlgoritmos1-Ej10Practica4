@@ -16,6 +16,7 @@
  */
 
 #include "main.h"
+#include "log.h"
 #include "stack.h"
 
 #include <stdio.h>
@@ -81,11 +82,11 @@ main(int argc, char *argv[])
   log_init(debug, __progname);
   log_info("main", "hello world!");
 
-  char a;
+  char a = 'b';
   stack_ptr stack = NULL;
   stack_create(&stack);
-  stack_push(&stack, 'a');
-  a = stack_pop(&stack);
+  stack_push(&stack, a);
+  a = (char) stack_pop(&stack);
   log_info("main", "First character in stack: %c", a);
 
   return EXIT_SUCCESS;
