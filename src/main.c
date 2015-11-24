@@ -15,7 +15,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include "tp_algo.h"
+#include "main.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -44,7 +44,6 @@ main(int argc, char *argv[])
 	int debug = 1;
 	int ch;
 
-	/* TODO:3001 If you want to add more options, add them here. */
 	static struct option long_options[] = {
                 { "debug", no_argument, 0, 'd' },
                 { "help",  no_argument, 0, 'h' },
@@ -79,11 +78,7 @@ main(int argc, char *argv[])
 	}
 
 	log_init(debug, __progname);
-
-	/* TODO:3000 It's time for you program to do something. Add anything
-	 * TODO:3000 you want here. */
 	log_info("main", "hello world!");
-	log_warnx("main", "your program does nothing");
 
 	return EXIT_SUCCESS;
 }
