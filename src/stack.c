@@ -44,8 +44,7 @@ void stack_push(stack_ptr *stack, t_data x)
   log_info("stack", "(stack_push): Adding a new node to stack with data: %c", x);
   node_ptr node;
   node = (node_ptr) malloc(sizeof(t_node));
-  if(node != NULL) 
-  {
+  if(node != NULL) {
     node->data = x;
     node->next = *stack;
     *stack = node;

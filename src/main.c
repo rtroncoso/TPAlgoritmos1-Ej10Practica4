@@ -24,30 +24,89 @@
 #include <unistd.h>
 #include <string.h>
 #include <getopt.h>
+#include <ctype.h>
 
 extern const char *__progname;
 
-static void
-usage(void)
+/**
+ * Shows usage options for the program
+ */
+static void usage(void)
 {
   fprintf(stderr, "Usage: %s [OPTIONS]\n",
       __progname);
   fprintf(stderr, "Version: %s\n", PACKAGE_STRING);
   fprintf(stderr, "\n");
   fprintf(stderr, " -d, --debug        be more verbose.\n");
+  fprintf(stderr, " -t, --test         performs tests on implementations\n");
   fprintf(stderr, " -h, --help         display help and exit\n");
   fprintf(stderr, " -v, --version      print version and exit\n");
   fprintf(stderr, "\n");
   fprintf(stderr, "see manual page " PACKAGE "(8) for more information\n");
 }
 
-int
-main(int argc, char *argv[])
+/**
+ * Performs simple tests for abstract types implementations
+ */
+static void test(void)
+{
+  char a = 'b';
+  stack_ptr stack = NULL;
+  seq_ptr seq = NULL;
+
+  seq_prepare(&seq, "sequence");
+  seq_write(&seq, 'o');
+  seq_close(&seq);
+
+  seq_prepare(&seq, "sequence");
+  log_info("main", "Character written in sequence: %c", a = seq_read_first(&seq));
+  seq_close(&seq);
+
+  stack_create(&stack);
+  log_info("main", "Stack is: %s", stack_empty(&stack) ? "Empty" : "Not empty");
+  stack_push(&stack, a);
+  log_info("main", "Stack is: %s", stack_empty(&stack) ? "Empty" : "Not empty");
+  log_info("main", "First character in stack: %c", stack_pop(&stack));
+  log_info("main", "Stack is: %s", stack_empty(&stack) ? "Empty" : "Not empty");
+}
+
+/**
+ * Solves the exrecise
+ *
+ * Exercise 10 from the 4th workbook
+ * 
+ * @param seq Sequence pointer
+ * @param stack Stack pointer
+ * @return void
+ */
+static void solve_exercise(seq_ptr *seq, stack_ptr *stack)
+{
+  char c; int aux = 0;
+  c = seq_read_first(seq);
+
+  while( ! seq_end(seq) && ! stack_full(stack)) {
+    if( ! isdigit(c)) {
+      stack_push(stack, c);
+    } else {
+      aux = atoi(&c);
+      while(aux > 0 && ! stack_empty(stack)) {
+        stack_pop(stack);
+        aux--;
+      }
+    }
+    c = seq_read_next(seq);
+  }
+
+  seq_close(seq);
+}
+
+int main(int argc, char *argv[])
 {
   int debug = 1;
   int ch;
 
   static struct option long_options[] = {
+                { "test", no_argument, 0, 't' },
                 { "debug", no_argument, 0, 'd' },
                 { "help",  no_argument, 0, 'h' },
                 { "version", no_argument, 0, 'v' },
@@ -55,7 +114,7 @@ main(int argc, char *argv[])
   };
   while (1) {
     int option_index = 0;
-    ch = getopt_long(argc, argv, "hvdD:",
+    ch = getopt_long(argc, argv, "hvdtD:",
         long_options, &option_index);
     if (ch == -1) break;
     switch (ch) {
@@ -73,6 +132,11 @@ main(int argc, char *argv[])
     case 'D':
       log_accept(optarg);
       break;
+    case 't':
+      log_init(2, __progname);
+      test();
+      exit(0);
+      break;
     default:
       fprintf(stderr, "unknown option `%c'\n", ch);
       usage();
@@ -80,28 +144,23 @@ main(int argc, char *argv[])
     }
   }
 
+  // Setup debug
   log_init(debug, __progname);
   log_info("main", "hello world!");
 
-  char a = 'b';
-  stack_ptr stack = NULL;
+  // Create abstract types variables
   seq_ptr seq = NULL;
+  stack_ptr stack = NULL;
 
-  seq_prepare(&seq, "sequence");
-  seq_write(&seq, 'o');
-  seq_close(&seq);
-
-  seq_prepare(&seq, "sequence");
-  log_info("main", "Character written in sequence: %c", a = seq_read_first(&seq));
-  seq_close(&seq);
-
+  // Initialize and solve exercise
+  seq_prepare(&seq, "test_data.txt");
   stack_create(&stack);
-  log_info("main", "Stack is: %s", stack_empty(&stack) ? "Empty" : "Not empty");
-  stack_push(&stack, a);
-  log_info("main", "Stack is: %s", stack_empty(&stack) ? "Empty" : "Not empty");
-  a = (char) stack_pop(&stack);
-  log_info("main", "First character in stack: %c", a);
-  log_info("main", "Stack is: %s", stack_empty(&stack) ? "Empty" : "Not empty");
+  solve_exercise(&seq, &stack);
 
+  // Outputs rest of the stack
+  while( ! stack_empty(&stack)) printf("%c", stack_pop(&stack));
+
+  // Return success
   return EXIT_SUCCESS;
 }
+

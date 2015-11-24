@@ -28,9 +28,11 @@
 void seq_prepare(seq_ptr *seq, const char *file_path)
 {
   *seq = (seq_ptr) malloc(sizeof(t_sequence));
-  if(seq != NULL)
-  {
-    (*seq)->file_ptr = fopen(file_path, "rw+");
+  if(seq != NULL) {
+    (*seq)->file_ptr = fopen(file_path, "rb+");
+    if((*seq)->file_ptr == NULL) {
+      (*seq)->file_ptr = fopen(file_path, "wb");
+    }
   }
 }
 
