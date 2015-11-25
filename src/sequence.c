@@ -29,11 +29,21 @@ void seq_prepare(seq_ptr *seq, const char *file_path)
 {
   *seq = (seq_ptr) malloc(sizeof(t_sequence));
   if(seq != NULL) {
-    (*seq)->file_ptr = fopen(file_path, "rb+");
+    (*seq)->file_ptr = fopen(file_path, "r+w");
     if((*seq)->file_ptr == NULL) {
-      (*seq)->file_ptr = fopen(file_path, "wb");
+      (*seq)->file_ptr = fopen(file_path, "ab+");
     }
   }
+}
+
+/**
+ * Rewinds the file pointer to the init of the stream
+ * 
+ * @param seq Sequence pointer
+ */
+void seq_init(seq_ptr *seq)
+{
+  rewind((*seq)->file_ptr);
 }
 
 /**

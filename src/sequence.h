@@ -32,6 +32,7 @@ typedef t_sequence *seq_ptr;
 
 // Function Declarations
 void seq_prepare(seq_ptr *seq, const char *file_path);
+void seq_init(seq_ptr *seq);
 void seq_write(seq_ptr *seq, char c);
 void seq_close(seq_ptr *seq);
 char seq_read_first(seq_ptr *seq);

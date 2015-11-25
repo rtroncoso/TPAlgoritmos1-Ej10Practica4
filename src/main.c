@@ -26,10 +26,14 @@
 #include <getopt.h>
 #include <ctype.h>
 
+#define TMP_SEQUENCE "sequence.in"
+
 extern const char *__progname;
 
 /**
  * Shows usage options for the program
+ *
+ * @return void
  */
 static void usage(void)
 {
@@ -46,7 +50,33 @@ static void usage(void)
 }
 
 /**
+ * Output a nice and tidy welcome message and
+ * description!
+ *
+ * @return void
+ */
+static void description()
+{
+  printf("=============== ABSTRACT TYPES C IMPLEMENTATION ===============\n");
+  printf("This program will accomplish the required assignments for the 10th exercise\n");
+  printf("in the students book given by <Patricia Mayor(pmayor@caece.edu.ar)>.\n");
+  printf("The assignments are as follows:\n");
+  printf("\n");
+  printf("The program should receive an input sequence of characters and store all\n");
+  printf("non-numerical characters in a stack. When a numerical character is found,\n");
+  printf("the program must remove from the stack as many characters as this number\n");
+  printf("indicates, or all the available characters on the stack if this number\n");
+  printf("exceeds the amount of characters in the input sequence.\n");
+  printf("\n");
+  printf("For further instructions run this command with the -(-h)elp option\n");
+  printf("or see the manual page for this program using man %s\n", __progname);
+  printf("===============================================================\n\n");
+}
+
+/**
  * Performs simple tests for abstract types implementations
+ *
+ * @return void
  */
 static void test(void)
 {
@@ -54,11 +84,9 @@ static void test(void)
   stack_ptr stack = NULL;
   seq_ptr seq = NULL;
 
-  seq_prepare(&seq, "sequence");
+  seq_prepare(&seq, "sequence.test");
   seq_write(&seq, 'o');
-  seq_close(&seq);
-
-  seq_prepare(&seq, "sequence");
+  seq_init(&seq);
   log_info("main", "Character written in sequence: %c", a = seq_read_first(&seq));
   seq_close(&seq);
 
@@ -98,6 +126,36 @@ static void solve_exercise(seq_ptr *seq, stack_ptr *stack)
   }
 
   seq_close(seq);
+}
+
+/**
+ * In case there is no file passed to the command line input,
+ * the user will be prompted for a sequence of characters inserted
+ * via keyboard.
+ * 
+ * @param seq Sequence pointer
+ * @return void
+ */
+static void prompt_user(seq_ptr *seq)
+{
+  char c;
+  printf("It seems as there is no input file being prompted into the program.\n");
+  do {
+    printf("Do you want to enter a sequence through this command line?: (y/n)\n");
+    scanf("%c", &c);
+  } while(c != 'y'  && c != 'n');
+
+  if(c == 'y') {
+    printf("Insert the sequence of characters (press enter to finish):\n");
+    char *str = (char *) malloc(sizeof(str) * 1024);
+    scanf (" %[^\n]s", str);
+
+    for(unsigned long i = 0; i < strlen(str); i++) {
+      seq_write(seq, str[i]);
+    }
+  } else {
+    exit(0);
+  }
 }
 
 int main(int argc, char *argv[])
@@ -150,9 +208,10 @@ int main(int argc, char *argv[])
     }
   }
 
-  // Setup debug
+  // Setup program
   log_init(debug, __progname);
   log_info("main", "hello world!");
+  description();
 
   // Create abstract types variables
   seq_ptr seq = NULL;
@@ -160,14 +219,19 @@ int main(int argc, char *argv[])
 
   // Initialize and solve exercise
   if(file_path == NULL) {
-    file_path = "test_data.txt";
+    seq_prepare(&seq, TMP_SEQUENCE);
+    prompt_user(&seq);
+    seq_init(&seq);
+  } else {
+    seq_prepare(&seq, file_path);
   }
-  seq_prepare(&seq, file_path); 
   stack_create(&stack);
   solve_exercise(&seq, &stack);
+  printf("[OUTPUT] The result for the algorithm is the following:\n");
   stack_output(&stack);
 
-  // Return success
+  // Clean up and return success
+  if(file_path == NULL) remove(TMP_SEQUENCE);
   return EXIT_SUCCESS;
 }
 
