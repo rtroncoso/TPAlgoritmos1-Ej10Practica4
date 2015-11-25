@@ -1,4 +1,4 @@
-#                                               -*- Autoconf -*-
+ #                                               -*- Autoconf -*-
 AC_PREREQ([2.64])
 
 AC_INIT([tp_algo],

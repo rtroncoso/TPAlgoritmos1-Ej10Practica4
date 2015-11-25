@@ -41,7 +41,8 @@ static void usage(void)
       __progname);
   fprintf(stderr, "Version: %s\n", PACKAGE_STRING);
   fprintf(stderr, "\n");
-  fprintf(stderr, " -d, --debug        be more verbose.\n");
+  fprintf(stderr, " -i, --input [file] uses an input file as the sequence data source\n");
+  fprintf(stderr, " -d, --debug        be more verbose\n");
   fprintf(stderr, " -t, --test         performs tests on implementations\n");
   fprintf(stderr, " -h, --help         display help and exit\n");
   fprintf(stderr, " -v, --version      print version and exit\n");
